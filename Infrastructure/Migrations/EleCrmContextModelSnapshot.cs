@@ -31,9 +31,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date_time");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
 
                     b.Property<string>("Note")
                         .IsRequired()

@@ -10,7 +10,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
     {
         builder.ToTable("request");
         builder.Property(r => r.Id).HasColumnName("id");
-        builder.Property(r => r.DateTime).HasColumnName("date_time");
+        builder.Property(r => r.Date).HasColumnName("date");
         builder.Property(r => r.Note).HasColumnName("note");
 
         builder.HasKey(a => a.Id);
