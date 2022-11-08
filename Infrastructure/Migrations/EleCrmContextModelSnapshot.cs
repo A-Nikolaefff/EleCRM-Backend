@@ -33,12 +33,16 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date")
-                        .HasColumnName("date");
+                        .HasColumnName("receipt_date");
 
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("note");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
 
                     b.HasKey("Id");
 

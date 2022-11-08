@@ -3,6 +3,7 @@
 public class Request
 {
     public int Id { get; set; } 
-    public DateOnly Date { get; set; }
+    public int Number { get; set; }
+    public DateOnly ReceiptDate { get; set; }
     public string Note { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
-﻿using Application.DTO.Response;
+﻿using Application.DTO.Requests;
+using Application.DTO.Response;
 using AutoMapper;
 using Domain;
 using Domain.Entities;
@@ -11,5 +12,6 @@ public class AppMappingProfile : Profile
     {
         AllowNullCollections = true;
         CreateMap<Request, RequestDto>();
+        CreateMap<CreateRequestDto, Request>();
     }
 }
