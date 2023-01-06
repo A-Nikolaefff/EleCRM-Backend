@@ -23,9 +23,9 @@ public class RequestService : IRequestService
     {
         IQueryable<Request> orderedRequests = sort switch
         {
-            "number" => _context.Requests.OrderBy(r => r.Number),
-            "-number" => _context.Requests.OrderByDescending(r => r.Number),
-            _ => _context.Requests.OrderBy(r => r.Number)
+            "id" => _context.Requests.OrderBy(r => r.Id),
+            "-id" => _context.Requests.OrderByDescending(r => r.Id),
+            _ => _context.Requests.OrderByDescending(r => r.Id)
         };
 
         var requestPage = await orderedRequests.Skip((page - 1) * limit).Take(limit)
@@ -49,5 +49,23 @@ public class RequestService : IRequestService
         var request = await _context.Requests.AddAsync(requestData);
         await _context.SaveChangesAsync();
         return _mapper.Map<Request, RequestDto>(request.Entity);
+    }
+
+    public async Task<RequestDto?> Update(UpdateRequestDto updateRequestDto)
+    {
+        var request = await _context.Requests.FindAsync(updateRequestDto.Id);
+        if (request is null) return null;
+        _mapper.Map(updateRequestDto, request);
+        await _context.SaveChangesAsync();
+        return _mapper.Map<Request, RequestDto>(request);
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var request = await _context.Requests.FindAsync(id);
+        if (request is null) return false;
+        _context.Requests.Remove(request);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

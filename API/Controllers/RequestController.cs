@@ -29,4 +29,19 @@ public class RequestController : ControllerBase
         var response = await _requestService.Create(createRequestDto);
         return Ok(response);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateRequestDto updateRequestDto)
+    {
+        var response = await _requestService.Update(updateRequestDto);
+        if (response is null) return new NotFoundResult();
+        return Ok(response);
+    }
+    
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromQuery] int id)
+    {
+        var isRequestDeleted = await _requestService.Delete(id);
+        return isRequestDeleted ? Ok() : new NotFoundResult();
+    }
 }

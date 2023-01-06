@@ -6,12 +6,15 @@ using Domain.Entities;
 
 namespace Application;
 
-public class AppMappingProfile : Profile
+public class RequestMappingProfile : Profile
 {
-    public AppMappingProfile()
+    public RequestMappingProfile()
     {
         AllowNullCollections = true;
         CreateMap<Request, RequestDto>();
         CreateMap<CreateRequestDto, Request>();
+        CreateMap<UpdateRequestDto, Request>()
+            .ForSourceMember(source => source.Id, 
+                config => config.DoNotValidate());
     }
 }

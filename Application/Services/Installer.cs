@@ -5,7 +5,7 @@ namespace Application.Services;
 
 public static class Installer
 {
-    public static void AddServices(this IServiceCollection container)
+    public static void AddCustomServices(this IServiceCollection container)
     {
         container
             .AddScoped<IRequestService, RequestService>();

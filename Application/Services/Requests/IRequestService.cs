@@ -8,4 +8,6 @@ public interface IRequestService
     Task<IEnumerable<RequestDto>> Get(int limit, int page, string sort);
     Task<int> GetTotalCount();
     Task<RequestDto> Create(CreateRequestDto createRequestDto);
+    Task<RequestDto?> Update(UpdateRequestDto updateRequestDto);
+    Task<bool> Delete(int id);
 }

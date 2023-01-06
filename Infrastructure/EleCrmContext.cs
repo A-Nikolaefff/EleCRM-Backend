@@ -17,8 +17,7 @@ public class EleCrmContext : DbContext
             new ConfigurationBuilder()
                 .AddJsonFile("appsettings." +
                              $"{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
-                .Build().GetSection("ConnectionStrings")[
-                    "ConnectionString"]
+                .Build().GetSection("ConnectionStrings")["ConnectionString"]
             ?? throw new Exception("Connection string is not found."));
     }
     
