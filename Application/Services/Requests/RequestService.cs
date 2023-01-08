@@ -41,30 +41,30 @@ public class RequestService : IRequestService
     public async Task<RequestDto> Create(CreateRequestDto createRequestDto)
     {
         var currentDate = DateTime.Today;
-        var lastRequest = _context.Requests
+        var lastRequestInCurrentYear = _context.Requests
             .Where(r => r.ReceiptDate.Year == currentDate.Year)
             .OrderByDescending(r => r.Number).FirstOrDefault();
-        var requestData = _mapper.Map<CreateRequestDto, Request>(createRequestDto);
-        requestData.Number = lastRequest is not null ? lastRequest.Number + 1 : 1;
-        var request = await _context.Requests.AddAsync(requestData);
+        var newRequest = _mapper.Map<CreateRequestDto, Request>(createRequestDto);
+        newRequest.Number = lastRequestInCurrentYear is null ? 1 : lastRequestInCurrentYear.Number + 1;
+        var request = await _context.Requests.AddAsync(newRequest);
         await _context.SaveChangesAsync();
         return _mapper.Map<Request, RequestDto>(request.Entity);
     }
 
     public async Task<RequestDto?> Update(UpdateRequestDto updateRequestDto)
     {
-        var request = await _context.Requests.FindAsync(updateRequestDto.Id);
-        if (request is null) return null;
-        _mapper.Map(updateRequestDto, request);
+        var updatingRequest = await _context.Requests.FindAsync(updateRequestDto.Id);
+        if (updatingRequest is null) return null;
+        _mapper.Map(updateRequestDto, updatingRequest);
         await _context.SaveChangesAsync();
-        return _mapper.Map<Request, RequestDto>(request);
+        return _mapper.Map<Request, RequestDto>(updatingRequest);
     }
 
     public async Task<bool> Delete(int id)
     {
-        var request = await _context.Requests.FindAsync(id);
-        if (request is null) return false;
-        _context.Requests.Remove(request);
+        var deletingRequest = await _context.Requests.FindAsync(id);
+        if (deletingRequest is null) return false;
+        _context.Requests.Remove(deletingRequest);
         await _context.SaveChangesAsync();
         return true;
     }
