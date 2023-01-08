@@ -42,7 +42,7 @@ public class RequestService : IRequestService
     {
         var currentDate = DateTime.Today;
         var lastRequestInCurrentYear = _context.Requests
-            .Where(r => r.ReceiptDate.Year == currentDate.Year)
+            .Where(r => r.Receipt.Year == currentDate.Year)
             .OrderByDescending(r => r.Number).FirstOrDefault();
         var newRequest = _mapper.Map<CreateRequestDto, Request>(createRequestDto);
         newRequest.Number = lastRequestInCurrentYear is null ? 1 : lastRequestInCurrentYear.Number + 1;

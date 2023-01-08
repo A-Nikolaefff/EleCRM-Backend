@@ -11,9 +11,9 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
         builder.ToTable("request");
         builder.Property(r => r.Id).HasColumnName("id");
         builder.Property(r => r.Number).HasColumnName("number");
-        builder.Property(r => r.ReceiptDate).HasColumnName("receipt_date");
+        builder.Property(r => r.Receipt).HasColumnName("receipt");
         builder.Property(r => r.Note).HasColumnName("note");
-
+        
         builder.HasKey(a => a.Id);
     }
 }

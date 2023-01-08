@@ -2,6 +2,6 @@
 
 public class CreateRequestDto
 {
-    public DateOnly ReceiptDate { get; set; }
+    public DateTime Receipt { get; set; }
     public string Note { get; set; } = null!;
 }

@@ -31,10 +31,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date")
-                        .HasColumnName("receipt_date");
-
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text")
@@ -43,6 +39,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("integer")
                         .HasColumnName("number");
+
+                    b.Property<DateTime>("Receipt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("receipt");
 
                     b.HasKey("Id");
 

@@ -7,8 +7,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(options => 
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-builder.Services.AddDateOnlyTimeOnlyStringConverters();
-builder.Services.AddSwaggerGen(c => c.UseDateOnlyTimeOnlyStringConverters());
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<EleCrmContext>();
 builder.Services.AddCustomServices();
 builder.Services.AddAutoMapper(typeof(RequestMappingProfile));
@@ -16,6 +15,8 @@ builder.Host.UseSerilog((hostingContext, configuration) =>
     configuration.ReadFrom.Configuration(hostingContext.Configuration));
 
 var app = builder.Build();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseSerilogRequestLogging();
 app.UseSwagger();
