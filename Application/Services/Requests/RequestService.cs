@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Application.DTO;
 using Application.DTO.Requests;
 using Application.DTO.Response;
 using AutoMapper;
@@ -19,23 +20,21 @@ public class RequestService : IRequestService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<RequestDto>> Get(int limit, int page, string sort)
+    public async Task<Page<RequestDto>> Get(int entriesPerPage, int currentPage, string sort, string? query)
     {
-        IQueryable<Request> orderedRequests = sort switch
+        var searchedRequests = query is null
+            ? _context.Requests
+            : _context.Requests.Where(r => r.Note.ToLower().Contains(query.ToLower()));
+        var orderedRequests = sort switch
         {
-            "id" => _context.Requests.OrderBy(r => r.Id),
-            "-id" => _context.Requests.OrderByDescending(r => r.Id),
-            _ => _context.Requests.OrderByDescending(r => r.Id)
+            "receipt" => searchedRequests.OrderBy(r => r.Receipt),
+            "-receipt" => searchedRequests.OrderByDescending(r => r.Receipt),
+            _ => searchedRequests.OrderByDescending(r => r.Receipt)
         };
-
-        var requestPage = await orderedRequests.Skip((page - 1) * limit).Take(limit)
+        var requestPage = await orderedRequests.Skip((currentPage - 1) * entriesPerPage).Take(entriesPerPage)
             .ToListAsync();
-        return _mapper.Map<List<Request>, List<RequestDto>>(requestPage);
-    }
-    
-    public async Task<int> GetTotalCount()
-    {
-        return await _context.Requests.CountAsync();
+        return new Page<RequestDto>(orderedRequests.Count(), entriesPerPage, currentPage,
+            _mapper.Map<List<Request>, List<RequestDto>>(requestPage));
     }
 
     public async Task<RequestDto> Create(CreateRequestDto createRequestDto)

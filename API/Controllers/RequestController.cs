@@ -15,12 +15,11 @@ public class RequestController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetPage([FromQuery] int limit, [FromQuery] int page, [FromQuery] string sort)
+    public async Task<IActionResult> GetPage(int entriesPerPage, int currentPage, string sort, string? query)
     {
-        var requestPage = await _requestService.Get(limit, page, sort);
-        var totalCount = await _requestService.GetTotalCount();
-        Response.Headers.Add("X-Total-Count", totalCount.ToString());
-        return Ok(requestPage);
+        var requestPage = await _requestService.Get(entriesPerPage, currentPage, sort, query);
+        Response.Headers.Add("X-Total-Count", requestPage.TotalCount.ToString());
+        return Ok(requestPage.Entries);
     }
 
     [HttpPost]
